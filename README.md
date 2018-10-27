@@ -12,6 +12,7 @@ APIs being used:
 - [Breezometer](https://breezometer.com/)
 - [Google Maps API](https://developers.google.com/maps/documentation/android-sdk/intro)
 
+### A rough demo of the workflow
 ![alt text](https://github.com/abhishek-iitj/Fjord/blob/master/iem_demo.jpg)
 
 
