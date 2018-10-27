@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private LocationManager locationManager;
+    private Button btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         mLatitudeTextView = (TextView) findViewById((R.id.latitude_textview));
         mLongitudeTextView = (TextView) findViewById((R.id.longitude_textview));
+        btn = (Button)findViewById(R.id.showAQI);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), ShowAQI.class);
+                intent.putExtra("lat", mLongitudeTextView.getText().toString());
+                intent.putExtra("long", mLatitudeTextView.getText().toString());
+                startActivity(intent);
+            }
+        });
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
