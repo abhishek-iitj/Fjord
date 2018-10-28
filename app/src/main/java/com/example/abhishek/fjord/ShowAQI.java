@@ -28,7 +28,7 @@ public class ShowAQI extends AppCompatActivity {
         longitude = extras.getString("long");
         Log.d("Latitude", latitude);
         Log.d("Longitude", longitude);
-        String urlString = "https://api.waqi.info/feed/geo:73.1166115;26.4733186/?token=427d4e86c04f476ae1af11fac004829fd53e8d20";
+        String urlString = "https://api.waqi.info/feed/geo:"+latitude+";"+longitude+"/?token=427d4e86c04f476ae1af11fac004829fd53e8d20";
         BackgroundWorker backgroundWorker=new BackgroundWorker(this, tv);
         backgroundWorker.execute(urlString);
     }
@@ -46,6 +46,7 @@ public class ShowAQI extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 String urlString = params[0];
+                Log.d("received url", urlString);
                 URL url = new URL(urlString);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("GET");

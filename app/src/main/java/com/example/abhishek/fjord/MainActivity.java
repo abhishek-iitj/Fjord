@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), ShowAQI.class);
-                intent.putExtra("lat", mLongitudeTextView.getText().toString());
-                intent.putExtra("long", mLatitudeTextView.getText().toString());
+                intent.putExtra("long", mLongitudeTextView.getText().toString());
+                intent.putExtra("lat", mLatitudeTextView.getText().toString());
                 startActivity(intent);
             }
         });
