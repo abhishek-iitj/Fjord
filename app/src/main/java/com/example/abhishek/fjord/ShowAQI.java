@@ -8,12 +8,17 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 public class ShowAQI extends AppCompatActivity {
     private TextView tv;
@@ -82,7 +87,33 @@ public class ShowAQI extends AppCompatActivity {
         protected void onPostExecute(String result) {
             pd.dismiss();
             alertDialog.dismiss();
-            tv.setText(result);
+            String finalResult = "";
+            HashMap<String, String> pollutantMap = new HashMap<>();
+            try{
+                JSONObject obj = new JSONObject(result);
+                JSONObject data = obj.getJSONObject("data");
+                Integer aqi = data.getInt("aqi");
+                Log.d("iaqi", aqi.toString());
+                JSONObject pollutant = data.getJSONObject("iaqi");
+                JSONObject city = data.getJSONObject("city");
+                pollutantMap.put("city", city.getString("name"));
+                finalResult+="CITY:    "+city.getString("name")+"\n\n";
+                pollutantMap.put("aqi", aqi.toString());
+                finalResult+="AQI:    "+aqi.toString()+"\n\n";
+                for(int i = 0; i<pollutant.names().length(); i++){
+                    //Log.d("iaqi", "key = " + pollutant.names().getString(i) + " value = " + pollutant.get(pollutant.names().getString(i)));
+                    JSONObject temp = pollutant.getJSONObject(pollutant.names().getString(i));
+                    //Log.d("name", pollutant.names().getString(i));
+                    //Log.d("value", temp.getString("v"));
+                    pollutantMap.put(pollutant.names().getString(i), temp.getString("v"));
+                    finalResult+=pollutant.names().getString(i).toUpperCase()+":    "+temp.getString("v")+"\n\n";
+                }
+            }catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+            System.out.println(pollutantMap);
+            tv.setText(finalResult);
+
         }
         @Override
         protected void onProgressUpdate(Void... values) {
