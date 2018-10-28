@@ -21,7 +21,7 @@ public class ShowAQI extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_aqi);
-        tv = (TextView) findViewById(R.id.showAQI);
+        tv = (TextView) findViewById(R.id.headingText);
         Bundle extras = getIntent().getExtras();
         String latitude, longitude;
         latitude = extras.getString("lat");
@@ -36,6 +36,7 @@ public class ShowAQI extends AppCompatActivity {
         Context context;
         AlertDialog alertDialog;
         TextView tv;
+        ProgressDialog pd;
         public BackgroundWorker(Context ctx, TextView t){
             this.context=ctx;
             this.tv = t;
@@ -72,14 +73,13 @@ public class ShowAQI extends AppCompatActivity {
         protected void onPreExecute() {
             alertDialog = new AlertDialog.Builder(context).create();
             alertDialog.setTitle("Fetching");
-            ProgressDialog pd = new ProgressDialog(ShowAQI.this);
+            pd = new ProgressDialog(ShowAQI.this);
             pd.setMessage("Please Wait");
             pd.show();
-
         }
         @Override
         protected void onPostExecute(String result) {
-            Log.d("got on post execute", result);
+            pd.dismiss();
             alertDialog.dismiss();
             tv.setText(result);
         }
