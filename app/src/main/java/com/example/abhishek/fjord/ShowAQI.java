@@ -113,7 +113,6 @@ public class ShowAQI extends AppCompatActivity {
             }
             System.out.println(pollutantMap);
             tv.setText(finalResult);
-
         }
         @Override
         protected void onProgressUpdate(Void... values) {
