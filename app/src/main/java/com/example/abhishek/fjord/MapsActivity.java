@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +29,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String airQualityType;
-
+    private Button totalAqi;
+    private Button pm25;
+    private Button pm10;
+    private Button ozone;
+    private Button no2;
+    private Button so2;
+    private Button co;
+    private Button aseanPm10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +55,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         longitude = extras.getString("long");
         addLocationMarker(latitude, longitude);
         airQualityType = "usepa-aqi";
-        addAirQualityIndex(latitude, longitude);
+        addAirQualityIndex();
+        setButtonListener(totalAqi, "usepa-aqi", R.id.TotalAqi);
+        setButtonListener(pm25, "usepa-pm25", R.id.pm25);
+        setButtonListener(pm10, "usepa-10", R.id.pm10);
+        setButtonListener(ozone, "usepa-o3", R.id.ozone);
+        setButtonListener(no2, "usepa-no2", R.id.no2);
+        setButtonListener(so2, "usepa-so2", R.id.so2);
+        setButtonListener(co, "usepa-co", R.id.co);
+        setButtonListener(aseanPm10, "asean-pm10", R.id.aseanPm10);
     }
 
-    private void addAirQualityIndex(String latitude, String longitude) {
+    private void setButtonListener(Button button, final String airQuality, int id) {
+        button = findViewById(id);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.clear();
+                airQualityType = airQuality;
+                addAirQualityIndex();
+            }
+        });
+    }
+
+    private void addAirQualityIndex() {
         TileProvider tileProvider = new UrlTileProvider(256, 256) {
             @Override
             public synchronized URL getTileUrl(int x, int y, int zoom) {
